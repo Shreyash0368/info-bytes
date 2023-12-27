@@ -32,14 +32,12 @@ const NewsCont = (props) => {
         setResults(parsedData.totalResults);
         setProgress(100);
     }
-
+    
     const fetchMoreData = async () => {
-        console.log(articles.length + "  :  " + results);
         setProgress(20);
         setPage(page + 1);
-        console.log(page);
         const url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&language=en&apiKey=${props.apiKey}&pageSize=${props.pageSize}&page=${page}`;
-
+        
         const data = await fetch(url);
         setProgress(40);
         const parsedData = await data.json();
@@ -57,7 +55,7 @@ const NewsCont = (props) => {
             <InfiniteScroll
                 dataLength={articles.length}
                 next={fetchMoreData}
-                hasMore={articles.length !== results}
+                hasMore={page <= Math.floor(results/props.pageSize) + 1}
                 loader={<Spinner />}>
                 <div className='container my-6 '>
                     <div className="row row-cols-1 row-cols-sm-4 my-4">
